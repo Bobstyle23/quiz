@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="./css/main.css" />
+    <title>Main page</title>
+  </head>
+  <body>
+    <!-- @@include('./components/hero-section-bullets/hero.html') -->
+    <header>
+      <h1>Quiz.js</h1>
+      <p>Do you know JS? Find out!</p>
+    </header>
+
+    <main>
+      <div id="score-container">
+        <p>Score: <span id="score">0 / 0</span></p>
+      </div>
+      <div id="statement"></div>
+
+      <div id="options">
+        <button name="true" value="true">true</button>
+        <button name="false" value="false">false</button>
+      </div>
+
+      <button name="next" value="next">Next Question</button>
+
+      <div id="explanation"></div>
+    </main>
+
+    <script src="./js/index.bundle.js"></script>
+  </body>
+</html>
