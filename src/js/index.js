@@ -9,13 +9,6 @@ const questionCount = document.querySelector("#question-count");
 
 const resetBtn = document.getElementById("reset");
 
-const fact = {
-  statement: "'1' + '1' === '2'",
-  answer: false,
-  explanation:
-    "The plus operator concatenates (joins together) strings, so '1' + '1' === '11'.",
-};
-
 const facts = [
   {
     statement: "'5' - 3 === 2",
@@ -97,21 +90,25 @@ const isCorrect = function (guess) {
   return guess === facts[count - 1].answer.toString();
 };
 
-nextQuestionButton.addEventListener("click", () => {
-  statement.textContent = facts[count].statement;
-
+function resetOptionBtn() {
   for (let button of optionButtons) {
     button.classList.remove("correct");
     button.classList.remove("incorrect");
     enable(button);
   }
+}
+
+nextQuestionButton.addEventListener("click", () => {
+  statement.textContent = facts[count].statement;
+
+  resetOptionBtn();
   explanation.classList.add("hidden");
   disable(nextQuestionButton);
 });
 
 // NOTE: for of loop adds event listener to each button and shows explanation upon click
 for (let button of optionButtons) {
-  button.addEventListener("click", (event) => {
+  button.addEventListener("click", () => {
     const selectedOption = button.value;
     questionCount.textContent = count += 1;
 
@@ -140,6 +137,7 @@ for (let button of optionButtons) {
   });
 }
 
+// NOTE: reset
 function reset() {
   playerScore = 0;
   count = 0;
@@ -148,12 +146,7 @@ function reset() {
   statement.textContent = facts[count].statement;
   nextQuestionButton.textContent = "Next Question";
   explanation.classList.add("hidden");
-
-  for (let button of optionButtons) {
-    button.classList.remove("correct");
-    button.classList.remove("incorrect");
-    enable(button);
-  }
+  resetOptionBtn();
 }
 
 resetBtn.addEventListener("click", () => {
