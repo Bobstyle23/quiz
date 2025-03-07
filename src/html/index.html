@@ -15,7 +15,10 @@
 
     <main>
       <div id="score-container">
-        <p>Score: <span id="score">0 / 0</span></p>
+        <p>
+          Score: <span id="score">0</span> / <span id="question-count">0</span>
+        </p>
+        <button type="button" id="reset">Reset</button>
       </div>
       <div id="statement"></div>
 
@@ -23,10 +26,9 @@
         <button name="true" value="true">true</button>
         <button name="false" value="false">false</button>
       </div>
+      <div id="explanation" class="hidden"></div>
 
       <button name="next" value="next">Next Question</button>
-
-      <div id="explanation"></div>
     </main>
 
     <script src="./js/index.bundle.js"></script>

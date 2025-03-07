@@ -4,8 +4,10 @@ const optionButtons = document.getElementById("options").children;
 const explanation = document.getElementById("explanation");
 
 const nextQuestionButton = document.querySelector('[name="next"]');
-const score = document.getElementById("score").textContent;
-console.log(score);
+const score = document.getElementById("score");
+const questionCount = document.querySelector("#question-count");
+
+const resetBtn = document.getElementById("reset");
 
 const fact = {
   statement: "'1' + '1' === '2'",
@@ -77,8 +79,14 @@ const facts = [
   },
 ];
 
-statement.textContent = fact.statement;
+// NOTE: default state
+let playerScore = 0;
+let count = 0;
+statement.textContent = facts[count].statement;
+disable(nextQuestionButton);
+resetBtn.classList.add("hidden");
 
+// NOTE: functions
 function disable(button) {
   return button.setAttribute("disabled", "");
 }
@@ -86,27 +94,44 @@ function disable(button) {
 const enable = (button) => button.removeAttribute("disabled");
 
 const isCorrect = function (guess) {
-  return guess === fact.answer.toString();
+  return guess === facts[count - 1].answer.toString();
 };
 
-// NOTE: good old for loop
-// for (let i = 0; i < optionButtons.length; i++) {
-//   const button = optionButtons[i];
-//   button.addEventListener("click", (event) => {
-//     explanation.textContent = fact.explanation;
-//   });
-// }
+nextQuestionButton.addEventListener("click", () => {
+  statement.textContent = facts[count].statement;
+
+  for (let button of optionButtons) {
+    button.classList.remove("correct");
+    button.classList.remove("incorrect");
+    enable(button);
+  }
+  explanation.classList.add("hidden");
+  disable(nextQuestionButton);
+});
 
 // NOTE: for of loop adds event listener to each button and shows explanation upon click
 for (let button of optionButtons) {
   button.addEventListener("click", (event) => {
     const selectedOption = button.value;
+    questionCount.textContent = count += 1;
 
-    isCorrect(selectedOption)
-      ? button.classList.add("correct")
-      : button.classList.add("incorrect");
+    if (isCorrect(selectedOption)) {
+      button.classList.add("correct");
+      score.textContent = playerScore += 1;
+    } else {
+      button.classList.add("incorrect");
+    }
 
-    explanation.textContent = fact.explanation;
+    if (count === 10) {
+      nextQuestionButton.textContent = "No more questions!";
+      disable(nextQuestionButton);
+      resetBtn.classList.remove("hidden");
+    } else {
+      enable(nextQuestionButton);
+    }
+
+    explanation.textContent = facts[count - 1].explanation;
+    explanation.classList.remove("hidden");
 
     // NOTE: adds a disabled attribute to each button
     for (let button of optionButtons) {
@@ -114,3 +139,24 @@ for (let button of optionButtons) {
     }
   });
 }
+
+function reset() {
+  playerScore = 0;
+  count = 0;
+  score.textContent = playerScore;
+  questionCount.textContent = count;
+  statement.textContent = facts[count].statement;
+  nextQuestionButton.textContent = "Next Question";
+  explanation.classList.add("hidden");
+
+  for (let button of optionButtons) {
+    button.classList.remove("correct");
+    button.classList.remove("incorrect");
+    enable(button);
+  }
+}
+
+resetBtn.addEventListener("click", () => {
+  reset();
+  resetBtn.classList.add("hidden");
+});
